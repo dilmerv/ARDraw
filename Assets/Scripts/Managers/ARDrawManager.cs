@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using DilmerGames.Core.Singletons;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 
 [RequireComponent(typeof(ARAnchorManager))]
@@ -11,14 +9,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 {
     [SerializeField] 
     private float distanceFromCamera = 0.3f;
-
-    public float DistanceFromCamera
-    {
-        get 
-        {
-            return distanceFromCamera;
-        }
-    }
 
     [SerializeField]
     private Material defaultColorMaterial;
@@ -59,8 +49,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     [SerializeField]
     private float lineWidth = 0.05f;
 
-    private const float DEFAULT_LINE_WIDTH = 0.01f;
-
     private LineRenderer prevLineRender;
     private LineRenderer currentLineRender;
 
@@ -71,6 +59,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private int positionCount = 0; // 2 by default
 
     private Vector3 prevPointDistance = Vector3.zero;
+
+    private bool CanDraw { get; set; }
 
     void Update ()
     {
@@ -88,20 +78,26 @@ public class ARDrawManager : Singleton<ARDrawManager>
         
 	}
 
+    public void AllowDraw(bool isAllow)
+    {
+        CanDraw = isAllow;
+    }
+
     private void SetLineSettings(LineRenderer currentLineRenderer)
     {
         currentLineRenderer.startWidth = lineWidth;
         currentLineRenderer.endWidth = lineWidth;
         currentLineRenderer.numCornerVertices = cornerVertices;
         currentLineRenderer.numCapVertices = endCapVertices;
-        if(allowSimplification)
-            currentLineRenderer.Simplify(tolerance);
+        if(allowSimplification) currentLineRenderer.Simplify(tolerance);
         currentLineRenderer.startColor = randomStartColor;
         currentLineRenderer.endColor = randomEndColor;
     }
 
     void DrawOnTouch()
     {
+        if(!CanDraw) return;
+
         Touch touch = Input.GetTouch(0);
         Vector3 touchPosition = arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distanceFromCamera));
 
@@ -112,12 +108,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
             ARAnchor anchor = anchorManager.AddAnchor(new Pose(touchPosition, Quaternion.identity));
             if (anchor == null) 
                 Debug.LogError("Error creating reference point");
-            else
+            else 
+            {
                 anchors.Add(anchor);
-
+                ARDebugManager.Instance.LogInfo($"Anchor created & total of {anchors.Count} anchor(s)");
+            }
             AddNewLineRenderer(anchor,touchPosition);
-
-            Debug.Log("Anchor Added");
         }
         else 
         {
@@ -127,6 +123,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     void DrawOnMouse()
     {
+        if(!CanDraw) return;
+
         Vector3 mousePosition = arCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceFromCamera));
 
         if(Input.GetMouseButton(0))
@@ -173,7 +171,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         positionCount = 2;
         GameObject go = new GameObject($"LineRenderer_{lines.Count}");
-
+        
         go.transform.parent = arAnchor?.transform ?? transform;
         go.transform.position = touchPosition;
         go.tag = "Line";
@@ -194,22 +192,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
         prevLineRender = currentLineRender;
         
         lines.Add(goLineRenderer);
+
+        ARDebugManager.Instance.LogInfo($"New line renderer created");
     }
 
-    GameObject LogSphere(Vector3 position, Transform parent)
-    {
-        var g = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        g.gameObject.transform.position = position;
-        g.gameObject.transform.localScale = new Vector3(0.01f,0.01f,0.01f);
-        g.transform.parent = parent;
-        return g;
-    }
     GameObject[] GetAllLinesInScene()
     {
         return GameObject.FindGameObjectsWithTag("Line");
     }
 
-    private void ClearLines()
+    public void ClearLines()
     {
         GameObject[] lines = GetAllLinesInScene();
         foreach (GameObject currentLine in lines)

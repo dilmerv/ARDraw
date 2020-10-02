@@ -9,6 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/ARDraw.unity
     guid: 166cdd821278c4fa5a99b736eb913126
   m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 3b6e1e3b51b0f4f9782af98302d4a97f,
+      type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 79f371bd6ffef4fb68c5e6025f22f69f,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 92ecd2e551c304604a0d2d16a523c356,

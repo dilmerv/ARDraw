@@ -168,6 +168,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
+    Android: com.dilmergames.ardraw
     iPhone: com.dilmergames.ardraw
   buildNumber:
     iPhone: 1.0.0
