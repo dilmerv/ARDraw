@@ -25,4 +25,4 @@ MonoBehaviour:
   allowSimplification: 0
   tolerance: 0.001
   applySimplifyAfterPoints: 20
-  allowMultiTouch: 0
+  allowMultiTouch: 1
