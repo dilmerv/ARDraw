@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1131f67916ff64a90a275342369903b3, type: 3}
+  m_Name: LineSettings
+  m_EditorClassIdentifier: 
+  lineTagName: Line
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  endColor: {r: 1, g: 1, b: 1, a: 1}
+  startWidth: 0.01
+  endWidth: 0.01
+  distanceFromCamera: 0.3
+  defaultMaterial: {fileID: 2100000, guid: 96e5ea0aeb55e488bb67155c0ccec1fe, type: 2}
+  cornerVertices: 5
+  endCapVertices: 5
+  minDistanceBeforeNewPoint: 0.001
+  allowSimplification: 0
+  tolerance: 0.001
+  applySimplifyAfterPoints: 20
+  allowMultiTouch: 0

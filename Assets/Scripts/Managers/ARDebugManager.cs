@@ -7,7 +7,7 @@ using UnityEngine;
 public class ARDebugManager : Singleton<ARDebugManager>
 {   
     [SerializeField]
-    private TextMeshProUGUI debugAreaText;
+    private TextMeshProUGUI debugAreaText = null;
 
     [SerializeField]
     private bool enableDebug = false;

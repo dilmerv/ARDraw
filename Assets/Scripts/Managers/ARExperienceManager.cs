@@ -6,12 +6,12 @@ using UnityEngine.XR.ARFoundation;
 public class ARExperienceManager : MonoBehaviour
 {
     [SerializeField]
-    private UnityEvent OnInitialized;
+    private UnityEvent OnInitialized = null;
 
     [SerializeField]
-    private UnityEvent OnRetarted;
+    private UnityEvent OnRetarted = null;
 
-    private ARPlaneManager arPlaneManager;
+    private ARPlaneManager arPlaneManager = null;
 
     private bool Initialized { get; set; }
     
